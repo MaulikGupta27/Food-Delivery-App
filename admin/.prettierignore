@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Logs
+*.log
+
+# Environment variables
+.env
+
+# Build output
+dist/
+build/
+
+# Lock files (Prettier doesn’t need to format them)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# System/Editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
