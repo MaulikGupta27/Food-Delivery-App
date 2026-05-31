@@ -31,7 +31,7 @@ const PlaceOrder = () => {
   const placeOrder = async (event) => {
     event.preventDefault();
     let orderItems = [];
-    food_list.map((item) => {
+    food_list.forEach((item) => {
       if (cartItems[item._id] > 0) {
         // create new object with item details and quantity
         let itemInfo = { ...item };
@@ -44,16 +44,20 @@ const PlaceOrder = () => {
       items: orderItems,
       totalAmount: getTotalCartAmount() + 2,
     };
-    let response = await axios.post(url + "/api/order/place", orderData, {
-      headers: {
-        token,
-      },
-    });
-    if (response.data.success) {
-      const {session_url} = response.data;
-      window.location.replace(session_url);
-    } else {
-      alert("Order placement failed. Please try again.");
+    try {
+      let response = await axios.post(url + "/api/order/place", orderData, {
+        headers: {
+          token,
+        },
+      });
+      if (response.data.success) {
+        const {session_url} = response.data;
+        window.location.replace(session_url);
+      } else {
+        alert("Order placement failed. Please try again.");
+      }
+    } catch (error) {
+      alert(error.response?.data?.message || "Something went wrong. Please try again.");
     }
   };
 

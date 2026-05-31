@@ -1,11 +1,11 @@
 import { useState } from "react";
 import ExploreMenu from "../../Components/ExploreMenu/ExploreMenu"
 import Header from "../../Components/Header/Header"
-import "./home.css"
+import "./Home.css"
 import FoodDisplay from "../../Components/FoodDisplay/FoodDisplay";
 import AppDownload from "../../Components/AppDownload/AppDownload";
 
-const home = () => {
+const Home = () => {
 
   const [category, setCategory] = useState("All");
 
@@ -19,4 +19,4 @@ const home = () => {
   )
 }
 
-export default home
+export default Home

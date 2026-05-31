@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext, useEffect, useState, useCallback } from "react"
 import "./MyOrders.css"
 import { StoreContext } from "../../Context/storeContext";
 import axios from "axios";
@@ -9,40 +9,31 @@ const MyOrders = () => {
     const {url, token} = useContext(StoreContext);
     const [data, setData] = useState([]);
 
-    const fetchorders = async() => {
-                try {
-                    const response = await axios.post(url+"/api/order/userorders", {}, {headers: {token}});
-                    setData(response.data.data || []);
-                } catch {
-                    setData([]);
-                }
-    }
-
-    useEffect(()=> {
-        if(token) {
-            const timer = setTimeout(async () => {
-                try {
-                    const response = await axios.post(url+"/api/order/userorders", {}, {headers: {token}});
-                    setData(response.data.data || []);
-                } catch {
-                    setData([]);
-                }
-            }, 0);
-
-            return () => clearTimeout(timer);
+    const fetchOrders = useCallback(async () => {
+        try {
+            const response = await axios.post(url+"/api/order/userorders", {}, {headers: {token}});
+            setData(response.data.data || []);
+        } catch {
+            setData([]);
         }
-    }, [token, url])
+    }, [url, token]);
+
+    useEffect(() => {
+        if(token) {
+            fetchOrders();
+        }
+    }, [token, fetchOrders]);
 
   return (
     <div className="my-orders">
       <h2>My Orders</h2>
       <div className="container">
-        {data.map((order, index)=> {
+        {data.map((order, index) => {
             return (
                 <div key={index} className="my-orders-order">
                     <img src={assets.parcel_icon} alt="" />
                     <p>
-                        {order.items.map((item, index)=> {
+                        {order.items.map((item, index) => {
                             if(index === order.items.length-1) {
                                 return item.name + " x " + item.quantity;
                             } else {
@@ -53,7 +44,7 @@ const MyOrders = () => {
                     <p>₹{order.amount.toFixed(2)}</p>
                     <p>Items: {order.items.length}</p>
                     <p><span>&#x25cf;</span><b>{order.status}</b></p>
-                    <button onClick={fetchorders}>Track Order</button>
+                    <button onClick={fetchOrders}>Track Order</button>
                 </div>
             )
         })}

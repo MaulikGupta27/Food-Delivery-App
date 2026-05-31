@@ -3,37 +3,40 @@ import { menu_list } from "../../assets/assets";
 
 const ExploreMenu = ({ category, setCategory }) => {
   return (
-    <div className="explore-menu" id="explore-menu">
-      <h1>Explore our Menu</h1>
-      <p>
-        Choose from a variety of delicious dishes prepared with the finest
-        ingredients.
-      </p>
+    <section className="explore-menu" id="explore-menu">
+      <div className="explore-menu-header">
+        <h2 className="explore-menu-title">
+          Explore <span className="gradient-text">Our Menu</span>
+        </h2>
+        <p className="explore-menu-subtitle">
+          Choose from a variety of delicious dishes prepared with the finest
+          ingredients.
+        </p>
+      </div>
       <div className="explore-menu-list">
         {menu_list.map((item, index) => {
-          // console.log("item.menu_name:", item.menu_name);
+          const isActive = category === item.menu_name;
           return (
-            <div
+            <button
               onClick={() =>
                 setCategory((prev) =>
                   prev === item.menu_name ? "All" : item.menu_name,
                 )
               }
               key={index}
-              className="explore-menu-list-item"
+              className={`explore-menu-chip ${isActive ? "active" : ""}`}
             >
               <img
-                className={category === item.menu_name ? "active" : ""}
                 src={item.menu_image}
-                alt="menu-items"
+                alt={item.menu_name}
+                className="chip-image"
               />
-              <p>{item.menu_name}</p>
-            </div>
+              <span className="chip-label">{item.menu_name}</span>
+            </button>
           );
         })}
       </div>
-      <hr />
-    </div>
+    </section>
   );
 };
 

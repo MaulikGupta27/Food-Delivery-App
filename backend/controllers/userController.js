@@ -8,7 +8,7 @@ export const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
         if (!email || !password) {
-            return res.status(400).json({ message: 'Please provide email and password' });
+            return res.status(400).json({ success: false, message: 'Please provide email and password' });
         }
 
         const user = await userModel.findOne({ email });
@@ -29,7 +29,7 @@ export const loginUser = async (req, res) => {
 };
 
 const createToken = (id) => {
-    return jwt.sign({ id }, process.env.JWT_SECRET);
+    return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '7d' });
 }
 
 // register user

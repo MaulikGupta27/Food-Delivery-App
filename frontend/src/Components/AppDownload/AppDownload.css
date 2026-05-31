@@ -1,22 +1,105 @@
+/* ===== App Download ===== */
 .app-download {
-    margin: auto auto;
-    margin-top: 100px;
-    font-size: max(3vw, 20px);
-    text-align: center;
-    font-weight: 500;
+  padding: 60px 0;
 }
-.app-download-platforms {
-    display: flex;
-    justify-content: center;
-    gap: max(2vw, 10px);
-    margin-top: 40px;
+
+.app-download-card {
+  position: relative;
+  padding: 48px 40px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  text-align: center;
+  overflow: hidden;
 }
-.app-download-platforms img{
-    width: max(30vw, 120px);
-    max-width: 180px;
-    transition: 0.5s;
-    cursor: pointer;
+
+.app-download-glow {
+  position: absolute;
+  top: -40%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 400px;
+  height: 300px;
+  background: radial-gradient(circle,
+    rgba(249, 115, 22, 0.08) 0%,
+    rgba(236, 72, 153, 0.05) 40%,
+    transparent 70%
+  );
+  pointer-events: none;
 }
-.app-download-platforms img:hover{
-    transform: scale(1.05);
+
+.app-download-content {
+  position: relative;
+  z-index: 1;
+}
+
+.app-download-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  background: var(--bg-glass-heavy);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+}
+
+.app-download-card h2 {
+  font-size: clamp(26px, 3vw, 36px);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+}
+
+.app-download-card p {
+  font-size: 15px;
+  color: var(--text-muted);
+  max-width: 450px;
+  margin: 0 auto 32px;
+  line-height: 1.6;
+}
+
+.app-download-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.app-download-buttons img {
+  width: 160px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  border-radius: var(--radius-sm);
+}
+
+.app-download-buttons img:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-glow);
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .app-download-card {
+    padding: 36px 24px;
+  }
+
+  .app-download-buttons img {
+    width: 140px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-download-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .app-download-buttons img {
+    width: 180px;
+  }
 }

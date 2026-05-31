@@ -1,16 +1,36 @@
-.food-display{
-    margin-top: 30px;
+/* ===== Food Display ===== */
+.food-display {
+  padding: 20px 0 40px;
 }
 
-.food-display h2{
-    font-size: max(2vw, 24px);
-    font-weight: 600;
+.food-display-title {
+  font-size: clamp(26px, 2.8vw, 36px);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 32px;
+  letter-spacing: -0.5px;
 }
 
-.food-display-list{
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    margin-top: 30px;
-    gap: 30px;
-    row-gap: 50px;
+.food-display-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+@media (max-width: 768px) {
+  .food-display {
+    padding: 16px 0 30px;
+  }
+
+  .food-display-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .food-display-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
 }
