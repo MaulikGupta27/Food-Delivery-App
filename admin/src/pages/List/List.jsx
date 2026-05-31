@@ -39,8 +39,15 @@ const List = ({ url }) => {
   }, [url]);
 
   return (
-    <div className="list add">
-      <p>List of Foods</p>
+    <div className="list panel-card">
+      <div className="section-heading">
+        <div>
+          <p className="eyebrow">Inventory</p>
+          <h2>List of foods</h2>
+        </div>
+        <p className="section-note">Keep the catalog lean by reviewing and removing outdated menu items.</p>
+      </div>
+
       <div className="list-table">
         <div className="list-table-format title">
           <b>Image</b>
@@ -49,7 +56,9 @@ const List = ({ url }) => {
           <b>Price</b>
           <b>Action</b>
         </div>
-        {list.map((item, index) => {
+        {list.length === 0 ? (
+          <div className="empty-state">No menu items yet. Add the first dish to populate the catalog.</div>
+        ) : list.map((item, index) => {
           return (
             <div className="list-table-format" key={index}>
               <img src={`${url}/images/`+item.image} alt={item.name} className="list-image" />

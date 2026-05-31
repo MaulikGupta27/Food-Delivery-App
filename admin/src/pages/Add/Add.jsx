@@ -48,14 +48,22 @@ const Add = ({ url }) => {
   }
 
   return (
-    <div className="add">
-      <form className="flex-col" onSubmit={onSubmitHandler}>
-        <div className="add-img-upload flex col">
+    <div className="add panel-card">
+      <div className="section-heading">
+        <div>
+          <p className="eyebrow">Catalog</p>
+          <h2>Add menu item</h2>
+        </div>
+        <p className="section-note">Upload a strong image, describe the dish, and publish it to the storefront.</p>
+      </div>
+
+      <form className="flex-col add-form" onSubmit={onSubmitHandler}>
+        <div className="add-img-upload flex-col">
           <p>Upload Image</p>
           <label htmlFor="image">
             <img src={image ? URL.createObjectURL(image) : assets.upload_area} alt="Upload Image" />
           </label>
-          <input onChange={(e)=>setImage(e.target.files[0])} type="file" id="image" hidden required />
+          <input onChange={(e)=>setImage(e.target.files[0])} type="file" id="image" accept="image/*" hidden required />
         </div>
         <div className="add-product-name flex-col">
           <p>Product Name</p>

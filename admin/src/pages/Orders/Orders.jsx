@@ -5,8 +5,14 @@ import {toast} from "react-toastify";
 import axios from "axios";
 import {assets} from "../../assets/assets";
 
+const orderStatuses = ["Food Preparing", "Out for Delivery", "Delivered"];
+
 const Orders = ({url, token}) => {
   const [orders, setOrders] = useState([]);
+
+  const normalizeStatus = (status) => {
+    return orderStatuses.includes(status) ? status : orderStatuses[0];
+  }
 
   const statusHandler = async(event, orderId)=> {
     try {
@@ -52,11 +58,12 @@ const Orders = ({url, token}) => {
   }, [url, token])
 
   return (
-    <div className="order add">
-      <h3>Order Page</h3>
+    <div className="order panel-card">
       <div className="order-list">
-        {orders.map((order, index)=> (
-          <div key={index} className="order-item">
+        {orders.length === 0 ? (
+          <div className="empty-state">No active orders right now. New requests will appear here automatically.</div>
+        ) : orders.map((order)=> (
+          <div key={order._id} className="order-item">
             <img src={assets.parcel_icon} alt="" />
             <div>
               <p className="order-item-food">
@@ -72,7 +79,6 @@ const Orders = ({url, token}) => {
                 {order.address.firstName+" "+order.address.lastName}
               </p>
               <div className="order-item-address">
-                <p>{order.address.street+", "}</p>
                 <p>{order.address.city+", "+order.address.state+", "+order.address.country+", "+order.address.zipCode}</p>
               </div>
               <p className="order-item-phone">
@@ -81,10 +87,16 @@ const Orders = ({url, token}) => {
             </div>
             <p>Items: {order.items.length}</p>
             <p>₹{order.amount.toFixed(2)}</p>
-            <select onChange={(event)=>statusHandler(event, order._id)} value={order.status}>
-              <option value="Food Preparing">Food Preparing</option>
-              <option value="Out for Delivery">Out for Delivery</option>
-              <option value="Delivered">Delivered</option>
+            <select
+              className="order-status-select"
+              onChange={(event)=>statusHandler(event, order._id)}
+              value={normalizeStatus(order.status)}
+            >
+              {orderStatuses.map((status) => (
+                <option key={status} value={status}>
+                  {status}
+                </option>
+              ))}
             </select>
           </div>
         ))}

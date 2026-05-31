@@ -32,21 +32,38 @@ const Login = ({ url, onLoginSuccess }) => {
 
   return (
     <div className="login-container">
-      <div className="login-box">
-        <h1>Admin Login</h1>
-        <form onSubmit={handleLogin}>
-          <input
-            type="password"
-            placeholder="Enter admin password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            disabled={loading}
-          />
-          <button type="submit" disabled={loading}>
-            {loading ? "Logging in..." : "Login"}
-          </button>
-        </form>
+      <div className="login-shell glass-panel">
+        <section className="login-marketing">
+          <p className="eyebrow">FeastDash Admin</p>
+          <h1>Restaurant operations, tuned for speed.</h1>
+          <p>
+            Update dishes, review orders, and keep the storefront aligned from a focused dashboard.
+          </p>
+          <div className="login-highlights">
+            <span>Menu publishing</span>
+            <span>Order tracking</span>
+            <span>Secure access</span>
+          </div>
+        </section>
+
+        <div className="login-box">
+          <p className="login-kicker">Secure access</p>
+          <h2>Admin Login</h2>
+          <form onSubmit={handleLogin}>
+            <input
+              type="password"
+              placeholder="Enter admin password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
+              required
+              disabled={loading}
+            />
+            <button type="submit" disabled={loading}>
+              {loading ? "Logging in..." : "Login"}
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );

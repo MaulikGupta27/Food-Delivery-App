@@ -4,7 +4,12 @@ import { NavLink } from "react-router-dom"
 
 const Sidebar = () => {
   return (
-    <div className="sidebar">
+    <aside className="sidebar glass-panel">
+      <div className="sidebar-top">
+        <p className="sidebar-label">Workspace</p>
+        <p className="sidebar-title">FeastDash panel</p>
+        <p className="sidebar-copy">A focused control surface for the restaurant menu and order queue.</p>
+      </div>
       <div className="sidebar-options">
         <NavLink to="/add" className="sidebar-option">
             <img src={assets.add_icon} alt="Add" />
@@ -19,7 +24,7 @@ const Sidebar = () => {
             <p>Orders</p>
         </NavLink>
       </div>
-    </div>
+    </aside>
   )
 }
 

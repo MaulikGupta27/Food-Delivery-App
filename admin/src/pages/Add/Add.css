@@ -1,35 +1,78 @@
 .add {
-    width: 70%;
-    margin-left: max(5vw, 25px);
-    margin-top: 50px;
-    color: #6d6d6d;
+    color: var(--text-secondary);
     font-size: 16px;
 }
-.add form {
+
+.add-form {
     gap: 20px;
 }
+
+.add-img-upload {
+    gap: 14px;
+}
+
+.add-img-upload p,
+.add-product-name p,
+.add-product-description p,
+.add-category p,
+.add-price p {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
 .add-img-upload img{
-    width: 120px;
+    width: 160px;
+    border-radius: var(--radius-md);
+    border: 1px dashed var(--border-strong);
+    background: rgba(255, 255, 255, 0.03);
+    padding: 12px;
 }
 .add-product-name, .add-product-description {
-    width: max(40%, 280px);
+    width: min(100%, 700px);
 }
 .add-product-name input, .add-product-description textarea {
-    padding: 10px;
+    padding: 14px 16px;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-primary);
+    resize: vertical;
+}
+
+.add-product-name input:focus,
+.add-product-description textarea:focus,
+.add-category-price select:focus,
+.add-category-price input:focus {
+    outline: none;
+    border-color: var(--accent-border);
+    box-shadow: 0 0 0 4px rgba(255, 106, 43, 0.12);
 }
 .add-category-price {
     display: flex;
     gap: 30px;
+    flex-wrap: wrap;
 }
 .add-category-price select, .add-category-price input {
-    max-width: 120px;
-    padding: 10px;
+    min-width: 180px;
+    padding: 14px 16px;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-primary);
 }
 .add-btn {
-    max-width: 120px;
+    max-width: 180px;
     border: none;
-    padding: 10px;
+    padding: 14px 18px;
     color: white;
-    background-color: black;
+    background: linear-gradient(135deg, var(--accent), var(--accent-strong));
     cursor: pointer;
+    border-radius: var(--radius-full);
+    font-weight: 700;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.add-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-glow);
 }
