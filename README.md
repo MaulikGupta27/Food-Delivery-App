@@ -1,30 +1,21 @@
-# Food Delivery MERN Monorepo
+# Food Delivery — MERN Monorepo
 
-MERN food delivery project with three applications in one repository:
+This repository contains three apps for a food-delivery project:
 
-- `frontend`: customer app (React + Vite)
-- `admin`: admin dashboard (React + Vite)
-- `backend`: API server (Express + MongoDB + Stripe)
+- `frontend` — customer React app (Vite)
+- `admin` — admin dashboard (React + Vite)
+- `backend` — Express API server (Node, MongoDB, Stripe)
 
 ## Prerequisites
 
 - Node.js 20+
 - npm 10+
-- MongoDB instance (local or Atlas)
-- Stripe account (for checkout)
+- MongoDB (local or Atlas)
+- Stripe account (if using payments)
 
-## Project Structure
+## Quickstart
 
-```text
-food_delivery/
-	backend/
-	frontend/
-	admin/
-```
-
-## 1) Configure Environment Variables
-
-Create environment files from examples:
+1. Create environment files from the provided examples (or copy manually):
 
 ```bash
 cp backend/.env.example backend/.env
@@ -32,7 +23,7 @@ cp frontend/.env.example frontend/.env
 cp admin/.env.example admin/.env
 ```
 
-If you are on Windows PowerShell, use:
+Windows PowerShell:
 
 ```powershell
 Copy-Item backend/.env.example backend/.env
@@ -40,104 +31,62 @@ Copy-Item frontend/.env.example frontend/.env
 Copy-Item admin/.env.example admin/.env
 ```
 
-### Backend (`backend/.env`)
+2. Install dependencies and start apps (from repo root):
+
+```bash
+cd backend && npm install
+npm start        # starts backend on PORT (default 4000)
+
+# in two other terminals
+cd frontend && npm install && npm run dev
+cd ../admin && npm install && npm run dev
+```
+
+3. Open the apps:
+
+- Customer app: http://localhost:5173
+- Admin app: http://localhost:5174 (or next available Vite port)
+- Backend API base: http://localhost:4000
+
+## API Documentation (Swagger)
+
+The backend exposes a Swagger UI for live API documentation. Start the backend and open:
+
+```
+http://localhost:4000/api-docs
+```
+
+Swagger will show available endpoints, request/response examples, and authentication details. The README no longer lists routes — use the Swagger UI as the source of truth.
+
+## Environment variables
+
+Refer to `backend/.env.example`, `frontend/.env.example`, and `admin/.env.example` for all required variables. Important backend keys include:
 
 - `PORT` (default `4000`)
 - `MONGODB_URI`
 - `JWT_SECRET`
 - `STRIPE_SECRET_KEY`
-- `FRONTEND_URL` (default `http://localhost:5173`)
-- `ADMIN_SECRET_KEY`
-- `ADMIN_PASSWORD`
 - `MAX_UPLOAD_SIZE_BYTES` (default `2097152`)
 
-### Frontend (`frontend/.env`)
+## File uploads
 
-- `VITE_API_URL` (default `http://localhost:4000`)
+Uploaded images are stored in `backend/uploads` and served at the `/images` static route.
 
-### Admin (`admin/.env`)
+## Build
 
-- `VITE_API_URL` (default `http://localhost:4000`)
-
-## 2) Install Dependencies
-
-```bash
-cd backend && npm install
-cd ../frontend && npm install
-cd ../admin && npm install
-```
-
-## 3) Run in Development
-
-Open three terminals.
-
-Terminal 1 (backend):
-
-```bash
-cd backend
-npm start
-```
-
-Terminal 2 (frontend):
-
-```bash
-cd frontend
-npm run dev
-```
-
-Terminal 3 (admin):
-
-```bash
-cd admin
-npm run dev
-```
-
-## 4) Build Frontend Apps
+To build frontend/admin for production:
 
 ```bash
 cd frontend && npm run build
 cd ../admin && npm run build
 ```
 
-## App URLs (Default)
+## Contributing
 
-- Frontend: `http://localhost:5173`
-- Admin: `http://localhost:5174` (or next available Vite port)
-- Backend API: `http://localhost:4000`
+- Open an issue or PR for changes.
+- Keep secrets out of the repo; commit `.env.example` only.
 
-## API Overview
+## License
 
-Base routes exposed by backend:
-
-- `GET /` -> API status message
-- `POST /api/user/register`
-- `POST /api/user/login`
-- `POST /api/admin/login`
-- `POST /api/admin/logout`
-- `POST /api/food/add`
-- `GET /api/food/list`
-- `POST /api/food/remove`
-- `POST /api/cart/add`
-- `POST /api/cart/remove`
-- `POST /api/cart/get`
-- `POST /api/order/place`
-- `GET /api/order/verify`
-- `POST /api/order/verify`
-- `POST /api/order/userorders`
-- `GET /api/order/list`
-- `POST /api/order/status`
-
-**API Docs**
-
-- **Swagger UI**: `http://localhost:4000/api-docs` (open after starting the backend)
-
-If you added new dependencies for Swagger, install them in the `backend` folder:
-
-```bash
-cd backend && npm install
-```
-
-## Notes
-
-- Uploaded images are served from `backend/uploads` via `/images`.
-- Keep real secrets out of version control and only commit `.env.example`.
+This project does not include a license file. Add one if you plan to publish or share the code.
+cd ../admin && npm run build
