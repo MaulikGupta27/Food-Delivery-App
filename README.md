@@ -127,6 +127,16 @@ Base routes exposed by backend:
 - `GET /api/order/list`
 - `POST /api/order/status`
 
+**API Docs**
+
+- **Swagger UI**: `http://localhost:4000/api-docs` (open after starting the backend)
+
+If you added new dependencies for Swagger, install them in the `backend` folder:
+
+```bash
+cd backend && npm install
+```
+
 ## Notes
 
 - Uploaded images are served from `backend/uploads` via `/images`.
