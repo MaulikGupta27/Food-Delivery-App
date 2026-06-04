@@ -29,17 +29,9 @@ const foodRouter = express.Router();
  *         description: Food added
  */
 
-// image storage engine using multer disc storage
-const storage =multer.diskStorage({
-    destination: "uploads", 
-    filename: (req, file, cb)=> {
-        return cb(null, `${Date.now()}_${file.originalname}`);
-    }
-})
-
-// file filter and size limit for multer
+// use memory storage — file buffer goes to Cloudinary, not local disk
 const upload = multer({
-    storage,
+    storage: multer.memoryStorage(),
     limits: { fileSize: Number(process.env.MAX_UPLOAD_SIZE_BYTES) || 2 * 1024 * 1024 },
     fileFilter: (req, file, cb) => {
         if (file.mimetype.startsWith("image/")) {

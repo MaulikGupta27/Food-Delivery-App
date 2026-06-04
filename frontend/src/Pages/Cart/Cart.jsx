@@ -34,7 +34,7 @@ const Cart = () => {
               if (cartItems[item._id] > 0) {
                 return (
                   <div key={item._id || item.id} className="cart-item-row">
-                    <img src={url + "/images/" + item.image} alt={item.name} className="cart-item-img" />
+                    <img src={item.image.startsWith("http") ? item.image : url + "/images/" + item.image} alt={item.name} className="cart-item-img" />
                     <span className="cart-item-name">{item.name}</span>
                     <span className="cart-item-price">₹{item.price}</span>
                     <span className="cart-item-qty">{cartItems[item._id]}</span>

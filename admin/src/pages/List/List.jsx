@@ -61,7 +61,7 @@ const List = ({ url }) => {
         ) : list.map((item, index) => {
           return (
             <div className="list-table-format" key={index}>
-              <img src={`${url}/images/`+item.image} alt={item.name} className="list-image" />
+              <img src={item.image.startsWith("http") ? item.image : `${url}/images/${item.image}`} alt={item.name} className="list-image" />
               <p>{item.name}</p>
               <p>{item.category}</p>
               <p>₹{item.price}</p>

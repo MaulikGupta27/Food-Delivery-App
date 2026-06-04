@@ -10,7 +10,7 @@ const FoodItem = ({id, name, price, description, image}) => {
   return (
     <div className="food-card">
         <div className="food-card-image-wrapper">
-            <img className="food-card-image" src={url + "/images/" + image} alt={name} />
+            <img className="food-card-image" src={image.startsWith("http") ? image : url + "/images/" + image} alt={name} />
             <div className="food-card-image-overlay"></div>
             {!count
                 ? <button className="food-card-add" onClick={() => addToCart(id)} aria-label="Add to cart">

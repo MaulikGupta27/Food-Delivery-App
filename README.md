@@ -4,7 +4,7 @@ This repository contains three apps for a food-delivery project:
 
 - `frontend` — customer React app (Vite)
 - `admin` — admin dashboard (React + Vite)
-- `backend` — Express API server (Node, MongoDB, Stripe)
+- `backend` — Express API server (Node, MongoDB, Stripe, Cloudinary)
 
 ## Prerequisites
 
@@ -12,6 +12,7 @@ This repository contains three apps for a food-delivery project:
 - npm 10+
 - MongoDB (local or Atlas)
 - Stripe account (if using payments)
+- Cloudinary account (for image hosting)
 
 ## Quickstart
 
@@ -67,10 +68,15 @@ Refer to `backend/.env.example`, `frontend/.env.example`, and `admin/.env.exampl
 - `JWT_SECRET`
 - `STRIPE_SECRET_KEY`
 - `MAX_UPLOAD_SIZE_BYTES` (default `2097152`)
+- `CLOUDINARY_CLOUD_NAME`
+- `CLOUDINARY_API_KEY`
+- `CLOUDINARY_API_SECRET`
 
-## File uploads
+## Image uploads (Cloudinary)
 
-Uploaded images are stored in `backend/uploads` and served at the `/images` static route.
+Food images are uploaded to **Cloudinary** and stored under the `food_delivery` folder. The backend uses Multer with in-memory storage to buffer uploads before streaming them to Cloudinary. Image URLs returned by the API are full HTTPS Cloudinary URLs.
+
+> **Note:** Older food items that were uploaded before the Cloudinary migration may still reference local file paths. The frontend and admin apps handle both formats gracefully — if the image URL starts with `http`, it's used directly; otherwise it falls back to the legacy `/images/<filename>` static route.
 
 ## Build
 
@@ -91,8 +97,9 @@ cd ../admin && npm run build
    - `MONGODB_URI` — your MongoDB Atlas connection string
    - `JWT_SECRET` — a long random string
    - `STRIPE_SECRET_KEY` — your Stripe secret key
-   - `ADMIN_SECRET_KEY` — a long random string
-   - `ADMIN_PASSWORD` — your admin password
+   - `CLOUDINARY_CLOUD_NAME` — your Cloudinary cloud name
+   - `CLOUDINARY_API_KEY` — your Cloudinary API key
+   - `CLOUDINARY_API_SECRET` — your Cloudinary API secret
    - `FRONTEND_URL` — your deployed frontend URL (e.g. `https://feastdash.vercel.app`)
    - `ADMIN_URL` — your deployed admin URL (e.g. `https://feastdash-admin.vercel.app`)
 4. Deploy. The health check at `/health` will confirm the service is running.
@@ -107,4 +114,3 @@ cd ../admin && npm run build
 5. Repeat for the `admin` directory as a separate Vercel project.
 
 > **Important:** After both are deployed, update `FRONTEND_URL` and `ADMIN_URL` in Render's env vars to match the actual Vercel URLs so CORS works correctly.
-
