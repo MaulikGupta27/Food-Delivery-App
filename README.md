@@ -1,13 +1,4 @@
-# 🍔 Food Delivery — Full-Stack MERN Application
-
-[![Node.js](https://img.shields.io/badge/Node.js-20%2B-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
-[![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)](https://react.dev/)
-[![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?logo=mongodb&logoColor=white)](https://www.mongodb.com/)
-[![Express](https://img.shields.io/badge/Express-5-000000?logo=express&logoColor=white)](https://expressjs.com/)
-[![Stripe](https://img.shields.io/badge/Stripe-Payments-635BFF?logo=stripe&logoColor=white)](https://stripe.com/)
-[![Vite](https://img.shields.io/badge/Vite-7-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
-[![Deployed on Vercel](https://img.shields.io/badge/Frontend-Vercel-000000?logo=vercel&logoColor=white)](https://vercel.com/)
-[![Deployed on Render](https://img.shields.io/badge/Backend-Render-46E3B7?logo=render&logoColor=white)](https://render.com/)
+# 🍔 FeastDash — Full-Stack Food Delivery Application
 
 A production-ready food delivery platform built with the **MERN** stack (MongoDB, Express, React, Node.js). Features a customer-facing ordering app, an admin dashboard for restaurant management, and a RESTful API backend with Stripe payments, JWT authentication, and Cloudinary image hosting.
 
@@ -206,9 +197,5 @@ All available endpoints, request/response schemas, and authentication requiremen
 ## ☁️ Image Uploads (Cloudinary)
 
 Food images are uploaded to **Cloudinary** under the `food_delivery` folder. The backend uses **Multer** with in-memory storage to buffer uploads before streaming them to Cloudinary. Image URLs returned by the API are full HTTPS Cloudinary URLs.
-
-> **Note:** Older food items uploaded before the Cloudinary migration may still reference local file paths. Both frontend apps handle this gracefully — if the URL starts with `http`, it's used directly; otherwise the app falls back to the legacy `/images/<filename>` static route.
-
-A one-time migration script is included at `backend/scripts/migrate-images-to-cloudinary.js` for moving existing local images to Cloudinary.
 
 
