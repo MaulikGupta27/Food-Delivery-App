@@ -5,7 +5,6 @@ const Navbar = ({ onLogout }) => {
   return (
     <div className="navbar glass-panel">
       <div className="navbar-brand">
-        <img className="logo" src={assets.logo} alt="FeastDash admin logo" />
         <div>
           <p className="navbar-kicker">FeastDash Admin</p>
           <p className="navbar-subtitle">Menu and order control</p>

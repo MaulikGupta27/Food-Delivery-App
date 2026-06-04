@@ -2,10 +2,14 @@ import jwt from "jsonwebtoken";
 
 export const adminLogin = async (req, res) => {
     const { password } = req.body;
-    const adminSecret = process.env.ADMIN_SECRET_KEY || "admin_secret_key_change_in_production";
-    const adminPassword = process.env.ADMIN_PASSWORD || "admin123";
+    const adminSecret = process.env.ADMIN_SECRET_KEY;
+    const adminPassword = process.env.ADMIN_PASSWORD;
 
     try {
+        if (!adminSecret || !adminPassword) {
+            return res.status(500).json({ success: false, message: "Admin credentials are not configured" });
+        }
+
         if (!password) {
             return res.status(400).json({ success: false, message: "Password is required" });
         }

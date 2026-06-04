@@ -84,7 +84,7 @@ export const verifyOrder = async (req, res) => {
             res.status(200).json({success: true, message: "Order confirmed successfully"});
         } else {
             await orderModel.findByIdAndDelete(orderId);
-            res.status(200).json({success: false, message: "Order cancelled successfully"});
+            res.status(200).json({success: false, message: "Order cancelled due to payment failure"});
         }
     } catch(error) {
         console.error("verifyOrder error:", error.message);

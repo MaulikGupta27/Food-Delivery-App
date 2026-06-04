@@ -81,12 +81,30 @@ cd frontend && npm run build
 cd ../admin && npm run build
 ```
 
-## Contributing
+## Deployment
 
-- Open an issue or PR for changes.
-- Keep secrets out of the repo; commit `.env.example` only.
+### Backend → Render
 
-## License
+1. Push your repo to GitHub.
+2. Go to [Render Dashboard](https://dashboard.render.com) → **New → Blueprint** → select this repo.
+3. In the Render service's **Environment** tab, set these secrets:
+   - `MONGODB_URI` — your MongoDB Atlas connection string
+   - `JWT_SECRET` — a long random string
+   - `STRIPE_SECRET_KEY` — your Stripe secret key
+   - `ADMIN_SECRET_KEY` — a long random string
+   - `ADMIN_PASSWORD` — your admin password
+   - `FRONTEND_URL` — your deployed frontend URL (e.g. `https://feastdash.vercel.app`)
+   - `ADMIN_URL` — your deployed admin URL (e.g. `https://feastdash-admin.vercel.app`)
+4. Deploy. The health check at `/health` will confirm the service is running.
 
-This project does not include a license file. Add one if you plan to publish or share the code.
-cd ../admin && npm run build
+### Frontend & Admin → Vercel
+
+1. Go to [Vercel](https://vercel.com) → **Add New → Project** → import this repo.
+2. Set the **Root Directory** to `frontend` (or `admin` for the admin panel).
+3. Vercel auto-detects Vite. Set this environment variable:
+   - `VITE_API_URL` = your Render backend URL (e.g. `https://food-delivery-api.onrender.com`)
+4. Deploy. The `vercel.json` rewrite rule handles SPA routing automatically.
+5. Repeat for the `admin` directory as a separate Vercel project.
+
+> **Important:** After both are deployed, update `FRONTEND_URL` and `ADMIN_URL` in Render's env vars to match the actual Vercel URLs so CORS works correctly.
+
