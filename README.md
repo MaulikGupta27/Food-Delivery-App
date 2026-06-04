@@ -6,6 +6,15 @@ This repository contains three apps for a food-delivery project:
 - `admin` — admin dashboard (React + Vite)
 - `backend` — Express API server (Node, MongoDB, Stripe, Cloudinary)
 
+## 🚀 Live Demo
+
+| App | URL |
+| --- | --- |
+| Customer App | https://food-delivery-app-tan-delta.vercel.app |
+| Admin Dashboard | https://food-delivery-app-aa22.vercel.app |
+| Backend API | https://food-delivery-app-45vo.onrender.com |
+| Swagger Docs | https://food-delivery-app-45vo.onrender.com/api-docs |
+
 ## Prerequisites
 
 - Node.js 20+
@@ -92,25 +101,25 @@ cd ../admin && npm run build
 ### Backend → Render
 
 1. Push your repo to GitHub.
-2. Go to [Render Dashboard](https://dashboard.render.com) → **New → Blueprint** → select this repo.
-3. In the Render service's **Environment** tab, set these secrets:
+2. Go to [Render Dashboard](https://dashboard.render.com) → **New → Web Service** → select this repo.
+3. Set **Root Directory** to `backend`, **Build Command** to `npm install`, **Start Command** to `npm start`.
+4. In the **Environment** tab, add:
    - `MONGODB_URI` — your MongoDB Atlas connection string
    - `JWT_SECRET` — a long random string
    - `STRIPE_SECRET_KEY` — your Stripe secret key
    - `CLOUDINARY_CLOUD_NAME` — your Cloudinary cloud name
    - `CLOUDINARY_API_KEY` — your Cloudinary API key
    - `CLOUDINARY_API_SECRET` — your Cloudinary API secret
-   - `FRONTEND_URL` — your deployed frontend URL (e.g. `https://feastdash.vercel.app`)
-   - `ADMIN_URL` — your deployed admin URL (e.g. `https://feastdash-admin.vercel.app`)
-4. Deploy. The health check at `/health` will confirm the service is running.
+   - `FRONTEND_URL` — your deployed frontend URL (e.g. `https://food-delivery-app-tan-delta.vercel.app`)
+   - `ADMIN_URL` — your deployed admin URL (e.g. `https://food-delivery-app-aa22.vercel.app`)
+5. Deploy.
 
 ### Frontend & Admin → Vercel
 
 1. Go to [Vercel](https://vercel.com) → **Add New → Project** → import this repo.
 2. Set the **Root Directory** to `frontend` (or `admin` for the admin panel).
-3. Vercel auto-detects Vite. Set this environment variable:
-   - `VITE_API_URL` = your Render backend URL (e.g. `https://food-delivery-api.onrender.com`)
-4. Deploy. The `vercel.json` rewrite rule handles SPA routing automatically.
-5. Repeat for the `admin` directory as a separate Vercel project.
+3. Vercel auto-detects Vite. Add this environment variable:
+   - `VITE_API_URL` = your Render backend URL (e.g. `https://food-delivery-app-45vo.onrender.com`)
+4. Deploy. Repeat for the `admin` directory as a separate Vercel project.
 
 > **Important:** After both are deployed, update `FRONTEND_URL` and `ADMIN_URL` in Render's env vars to match the actual Vercel URLs so CORS works correctly.
