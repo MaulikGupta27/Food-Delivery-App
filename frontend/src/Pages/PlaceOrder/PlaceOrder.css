@@ -4,7 +4,7 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: clamp(24px, 4vw, 48px);
-  padding: 60px 0;
+  padding: 40px 0 80px;
   min-height: 60vh;
   animation: fadeInUp 0.5s ease-out;
 }
@@ -20,13 +20,131 @@
 }
 
 .place-order-left .title {
-  font-size: clamp(22px, 2.2vw, 30px);
+  font-size: clamp(22px, 2.2vw, 28px);
   font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   letter-spacing: -0.3px;
 }
 
+.order-error-banner {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #f87171;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+/* --- Saved Addresses --- */
+.saved-addresses-block {
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.sub-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+
+.saved-address-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.saved-address-card {
+  padding: 14px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.saved-address-card:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-light);
+}
+
+.saved-address-card.selected {
+  border-color: var(--accent);
+  background: rgba(249, 115, 22, 0.08);
+  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.25);
+}
+
+.card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.address-label-badge {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  color: var(--text-primary);
+}
+
+.default-pill {
+  font-size: 10px;
+  color: #4ade80;
+  background: rgba(34, 197, 94, 0.15);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.addr-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.addr-text {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.4;
+  margin-bottom: 6px;
+}
+
+.addr-phone {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.new-address-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 110px;
+  border-style: dashed;
+}
+
+.new-address-card .plus-icon {
+  font-size: 24px;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+
+.new-address-card p {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* --- Form Fields --- */
 .place-order-left input {
   margin-bottom: 14px;
   width: 100%;
@@ -56,12 +174,136 @@
   gap: 12px;
 }
 
-/* --- Right: Cart Summary --- */
+/* Save Address Option */
+.save-address-opt {
+  margin-top: 6px;
+  padding: 12px 14px;
+  background: var(--bg-glass);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.checkbox-container input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin-bottom: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.address-tag-select {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.tag-btn {
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.tag-btn.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+/* --- Right Column --- */
 .place-order-right {
   width: 100%;
   max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
+/* --- Payment Method Selector --- */
+.payment-method-card {
+  padding: 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+.payment-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.payment-option {
+  display: flex;
+  align-items: center;
+  padding: 14px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.payment-option:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-light);
+}
+
+.payment-option.active {
+  border-color: var(--accent);
+  background: rgba(249, 115, 22, 0.08);
+  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2);
+}
+
+.payment-option input[type="radio"] {
+  display: none;
+}
+
+.option-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.option-icon {
+  font-size: 24px;
+}
+
+.option-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.option-subtitle {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* --- Order Summary / Cart Total --- */
 .place-order .cart-total {
   padding: 24px;
   background: var(--bg-card);
@@ -86,10 +328,19 @@
   padding: 4px 0;
 }
 
-.place-order .cart-total-details b {
+.total-row {
+  padding-top: 8px;
+}
+
+.total-row b {
   font-weight: 700;
   color: var(--text-primary);
   font-size: 17px;
+}
+
+.total-value {
+  color: var(--accent) !important;
+  font-size: 20px !important;
 }
 
 .place-order .cart-total hr {
@@ -98,48 +349,27 @@
   border: none;
 }
 
-.place-order .cart-total button {
+.place-order-submit-btn {
+  margin-top: 10px;
   width: 100%;
-  margin-top: 8px;
   padding: 14px;
-  background: var(--accent-gradient);
-  color: white;
-  font-weight: 600;
   font-size: 14px;
-  letter-spacing: 0.3px;
-  border: none;
-  border-radius: var(--radius-full);
+  font-weight: 700;
+  border-radius: var(--radius-md);
   cursor: pointer;
-  transition: var(--transition-fast);
-  position: relative;
-  overflow: hidden;
+  letter-spacing: 0.5px;
 }
 
-.place-order .cart-total button::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.2),
-    transparent
-  );
-  background-size: 200% 100%;
-  animation: shimmer 3s infinite;
-  pointer-events: none;
-}
-
-.place-order .cart-total button:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-glow-strong);
+.place-order-submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 /* --- Responsive --- */
 @media (max-width: 900px) {
   .place-order {
     flex-direction: column;
-    gap: 24px;
+    padding: 30px 0 60px;
   }
 
   .place-order-left,
@@ -148,17 +378,53 @@
   }
 }
 
-@media (max-width: 560px) {
-  .place-order {
-    padding: 40px 0;
-  }
-
+@media (max-width: 480px) {
   .place-order-left {
-    padding: 20px;
+    padding: 20px 16px;
   }
 
   .place-order-left .multi-fields {
     flex-direction: column;
     gap: 0;
   }
+
+  .saved-address-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Guest Sign In Prompt & Banner Action */
+.banner-signin-btn {
+  margin-left: 12px;
+  padding: 4px 12px;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.guest-signin-prompt {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 18px;
+  background: rgba(249, 115, 22, 0.08);
+  border: 1px solid rgba(249, 115, 22, 0.25);
+  border-radius: var(--radius-md);
+  margin-bottom: 20px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.signin-checkout-btn {
+  padding: 8px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  white-space: nowrap;
 }

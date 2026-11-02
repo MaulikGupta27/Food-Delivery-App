@@ -11,7 +11,7 @@ const Verify = () => {
   const [searchParams] = useSearchParams();
   const success = searchParams.get("success");
   const orderId = searchParams.get("orderId");
-  const {url} = useContext(StoreContext);
+  const { url, setCartItems } = useContext(StoreContext);
   const navigate = useNavigate();
   
   useEffect(()=> {
@@ -22,7 +22,8 @@ const Verify = () => {
         });
 
         if(response.data.success) {
-          navigate("/myorders");
+          setCartItems({});
+          navigate("/myorders", { replace: true });
         } else {
           navigate("/");
         }

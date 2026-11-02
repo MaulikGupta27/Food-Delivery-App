@@ -28,9 +28,14 @@ const orderSchema = new mongoose.Schema({
     payment: {
         type: Boolean,
         default: false
+    },
+    paymentMethod: {
+        type: String,
+        enum: ["Stripe", "COD"],
+        default: "Stripe"
     }
-});
+}, { timestamps: true });
 
-const orderModel = mongoose.models.order || mongoose.model("orders", orderSchema);
+const orderModel = mongoose.models.orders || mongoose.model("orders", orderSchema);
 
 export default orderModel;

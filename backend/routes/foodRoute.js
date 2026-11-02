@@ -1,38 +1,13 @@
 import express from "express";
-import { addFood, listFood, removeFood } from "../controllers/foodController.js";
-import multer from "multer";    // for image storage
+import { addFood, updateFood, toggleAvailability, listFood, removeFood } from "../controllers/foodController.js";
+import multer from "multer";
 
 const foodRouter = express.Router();
-
-/**
- * @openapi
- * /api/food/add:
- *   post:
- *     summary: Add a new food item
- *     tags:
- *       - Food
- *     requestBody:
- *       content:
- *         multipart/form-data:
- *           schema:
- *             type: object
- *             properties:
- *               name:
- *                 type: string
- *               price:
- *                 type: number
- *               image:
- *                 type: string
- *                 format: binary
- *     responses:
- *       '200':
- *         description: Food added
- */
 
 // use memory storage — file buffer goes to Cloudinary, not local disk
 const upload = multer({
     storage: multer.memoryStorage(),
-    limits: { fileSize: Number(process.env.MAX_UPLOAD_SIZE_BYTES) || 2 * 1024 * 1024 },
+    limits: { fileSize: Number(process.env.MAX_UPLOAD_SIZE_BYTES) || 4 * 1024 * 1024 },
     fileFilter: (req, file, cb) => {
         if (file.mimetype.startsWith("image/")) {
             return cb(null, true);
@@ -42,39 +17,9 @@ const upload = multer({
 });
 
 foodRouter.post("/add", upload.single("image"), addFood);
-
-/**
- * @openapi
- * /api/food/list:
- *   get:
- *     summary: Get list of food items
- *     tags:
- *       - Food
- *     responses:
- *       '200':
- *         description: A list of food items
- */
+foodRouter.put("/update/:id", upload.single("image"), updateFood);
+foodRouter.patch("/toggle/:id", toggleAvailability);
 foodRouter.get("/list", listFood);
-
-/**
- * @openapi
- * /api/food/remove:
- *   post:
- *     summary: Remove a food item
- *     tags:
- *       - Food
- *     requestBody:
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               id:
- *                 type: string
- *     responses:
- *       '200':
- *         description: Food removed
- */
 foodRouter.post("/remove", removeFood);
 
 export default foodRouter;

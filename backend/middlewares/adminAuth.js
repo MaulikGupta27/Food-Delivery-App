@@ -1,11 +1,15 @@
 import jwt from "jsonwebtoken";
 
 export const adminAuthMiddleware = (req, res, next) => {
-    const { token } = req.headers;
+    let token = req.headers.token || req.headers.authorization;
     const adminSecret = process.env.ADMIN_SECRET_KEY;
     
     if (!token) {
         return res.status(401).json({ success: false, message: "Admin token not provided" });
+    }
+
+    if (typeof token === "string" && token.startsWith("Bearer ")) {
+        token = token.slice(7).trim();
     }
     
     if (!adminSecret) {
@@ -20,6 +24,7 @@ export const adminAuthMiddleware = (req, res, next) => {
         req.adminId = decoded.id;
         next();
     } catch (error) {
+        console.error("adminAuthMiddleware verification failed:", error.name, error.message);
         return res.status(401).json({ success: false, message: "Invalid or expired admin token" });
     }
 };

@@ -1,13 +1,14 @@
-import Navbar from "./components/Navbar/Navbar"
-import Sidebar from "./components/Sidebar/Sidebar"
-import { Navigate, Route, Routes, useLocation } from "react-router-dom"
-import Add from "./pages/Add/Add"
-import List from "./pages/List/List"
-import Orders from "./pages/Orders/Orders"
-import Login from "./pages/Login/Login"
-import { ToastContainer } from "react-toastify"
-import "react-toastify/dist/ReactToastify.css"
-import { useState, useEffect } from "react"
+import Navbar from "./components/Navbar/Navbar";
+import Sidebar from "./components/Sidebar/Sidebar";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import Add from "./pages/Add/Add";
+import List from "./pages/List/List";
+import Orders from "./pages/Orders/Orders";
+import Login from "./pages/Login/Login";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 const pageConfig = {
   "/add": {
@@ -27,8 +28,7 @@ const pageConfig = {
     description: "Move orders through the delivery pipeline with a clean, readable workflow.",
     tags: ["Kitchen queue", "Delivery status", "Order flow"],
   },
-}
-
+};
 
 const App = () => {
   const url = import.meta.env.VITE_API_URL || "http://localhost:4000";
@@ -45,10 +45,28 @@ const App = () => {
   useEffect(() => {
     const token = localStorage.getItem("adminToken");
     if (token) {
-      setTimeout(() => {
-        setIsAuthenticated(true);
-      }, 0);
+      setIsAuthenticated(true);
     }
+  }, []);
+
+  // Interceptor: automatically handle expired admin token (401)
+  useEffect(() => {
+    const interceptor = axios.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.response?.status === 401) {
+          const reqUrl = error.config?.url || "";
+          if (!reqUrl.includes("/api/admin/login")) {
+            localStorage.removeItem("adminToken");
+            setIsAuthenticated(false);
+            toast.error("Admin session expired. Please sign in again.");
+          }
+        }
+        return Promise.reject(error);
+      }
+    );
+
+    return () => axios.interceptors.response.eject(interceptor);
   }, []);
 
   const handleLogout = () => {
@@ -59,7 +77,7 @@ const App = () => {
   if (!isAuthenticated) {
     return (
       <div>
-        <ToastContainer />
+        <ToastContainer position="top-right" autoClose={2500} theme="dark" />
         <Login url={url} onLoginSuccess={() => setIsAuthenticated(true)} />
       </div>
     );
@@ -91,16 +109,19 @@ const App = () => {
 
           <div className="route-panel">
             <Routes>
-              <Route path="/" element={<Navigate to="/add" replace />} />
+              <Route path="/" element={<Navigate to="/orders" replace />} />
               <Route path="/add" element={<Add url={url} />} />
               <Route path="/list" element={<List url={url} />} />
-              <Route path="/orders" element={<Orders url={url} token={localStorage.getItem("adminToken")} />} />
+              <Route
+                path="/orders"
+                element={<Orders url={url} token={localStorage.getItem("adminToken")} />}
+              />
             </Routes>
           </div>
         </main>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
