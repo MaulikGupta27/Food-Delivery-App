@@ -3,13 +3,32 @@ import { useEffect, useState, useCallback } from "react";
 import { StoreContext } from "./storeContext";
 
 const StoreContextProvider = (props) => {
-    const [cartItems, setCartItems] = useState({});
     const url = import.meta.env.VITE_API_URL || "http://localhost:4000";
     const [token, setToken] = useState(() => localStorage.getItem("token") || "");
     const [food_list, setFoodList] = useState([]);
 
+    // Initialize cart from localStorage so guest cart survives reloads & logins
+    const [cartItems, setCartItems] = useState(() => {
+        try {
+            const saved = localStorage.getItem("cartItems");
+            return saved ? JSON.parse(saved) : {};
+        } catch {
+            return {};
+        }
+    });
+
+    // Keep localStorage in sync with cartItems
+    useEffect(() => {
+        try {
+            localStorage.setItem("cartItems", JSON.stringify(cartItems));
+        } catch (e) {
+            console.error("Failed to persist cart:", e);
+        }
+    }, [cartItems]);
+
     const logout = useCallback(() => {
         localStorage.removeItem("token");
+        localStorage.removeItem("cartItems");
         setToken("");
         setCartItems({});
     }, []);
@@ -34,12 +53,58 @@ const StoreContextProvider = (props) => {
         return () => axios.interceptors.response.eject(interceptor);
     }, [logout]);
 
-    const addToCart = async (itemId) => {
-        if (!cartItems[itemId]) {
-            setCartItems((prev) => ({ ...prev, [itemId]: 1 }));
-        } else {
-            setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
+    // Merges guest cart with server cart when user signs in
+    const syncCartWithServer = useCallback(async (userToken) => {
+        const activeToken = userToken || token;
+        if (!activeToken) return;
+
+        try {
+            const currentLocalCart = { ...cartItems };
+
+            // 1. Get existing server cart
+            const cartResponse = await axios.post(
+                url + "/api/cart/get",
+                {},
+                { headers: { token: activeToken } }
+            );
+            const serverCart = cartResponse.data.cartData || {};
+
+            // 2. Merge local guest items with server items
+            const mergedCart = { ...serverCart };
+
+            for (const itemId in currentLocalCart) {
+                const localQty = currentLocalCart[itemId] || 0;
+                if (localQty > 0) {
+                    const serverQty = mergedCart[itemId] || 0;
+                    if (localQty > serverQty) {
+                        const diff = localQty - serverQty;
+                        // Push missing quantities to server
+                        for (let i = 0; i < diff; i++) {
+                            await axios.post(
+                                url + "/api/cart/add",
+                                { itemId },
+                                { headers: { token: activeToken } }
+                            );
+                        }
+                        mergedCart[itemId] = localQty;
+                    }
+                }
+            }
+
+            setCartItems(mergedCart);
+            localStorage.setItem("cartItems", JSON.stringify(mergedCart));
+            return mergedCart;
+        } catch (err) {
+            console.error("syncCartWithServer error:", err);
         }
+    }, [cartItems, token, url]);
+
+    const addToCart = async (itemId) => {
+        setCartItems((prev) => ({
+            ...prev,
+            [itemId]: (prev[itemId] || 0) + 1,
+        }));
+
         if (token) {
             try {
                 await axios.post(
@@ -54,7 +119,16 @@ const StoreContextProvider = (props) => {
     };
 
     const removeFromCart = async (itemId) => {
-        setCartItems((prev) => ({ ...prev, [itemId]: Math.max(0, (prev[itemId] || 0) - 1) }));
+        setCartItems((prev) => {
+            const updated = { ...prev };
+            if (updated[itemId] > 1) {
+                updated[itemId] -= 1;
+            } else {
+                delete updated[itemId];
+            }
+            return updated;
+        });
+
         if (token) {
             try {
                 await axios.post(
@@ -96,7 +170,12 @@ const StoreContextProvider = (props) => {
                         {},
                         { headers: { token: localToken } }
                     );
-                    setCartItems(cartResponse.data.cartData || {});
+                    const serverCart = cartResponse.data.cartData || {};
+                    // Merge rather than completely overwriting
+                    setCartItems((prev) => {
+                        const merged = { ...serverCart, ...prev };
+                        return Object.keys(merged).length > 0 ? merged : serverCart;
+                    });
                     setToken(localToken);
                 } catch (error) {
                     if (error.response?.status === 401) {
@@ -119,7 +198,8 @@ const StoreContextProvider = (props) => {
         url,
         token,
         setToken,
-        logout
+        logout,
+        syncCartWithServer
     };
 
     return (
